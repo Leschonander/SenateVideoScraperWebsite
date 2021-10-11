@@ -90,14 +90,6 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   return (
     <div className={classes.root}>
       <CssBaseline />
