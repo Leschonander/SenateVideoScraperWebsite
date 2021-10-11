@@ -61,7 +61,6 @@ export default function HearingDashboard() {
               exportButton: {
                 csv: true,
               },
-              fontSize: 12,
             }}
           />
         </div>
