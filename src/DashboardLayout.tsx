@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function DashboardLayout({ children }: { children: JSX.Element | JSX.Element[] }) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open] = React.useState(false);
 
   return (
     <div className={classes.root}>
