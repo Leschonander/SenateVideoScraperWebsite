@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 
 import React from 'react';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: { paddingTop: theme.spacing(2) },
     amount: { margin: theme.spacing(1) },
