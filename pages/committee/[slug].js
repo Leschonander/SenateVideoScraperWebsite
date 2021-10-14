@@ -11,13 +11,12 @@ import React from 'react';
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: { paddingTop: theme.spacing(2) },
-    amount: { margin: theme.spacing(1) },
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
+    card: {
+      backgroundColor: 'ghostwhite',
+      backgroundClip: 'content-box',
+      boxShadow: '0px 4px 35px ghostwhite',
+      borderRadius: '6px',
+      border: '1px solid ghostwhite',
     },
   })
 );
@@ -57,7 +56,6 @@ export default function HearingDashboard() {
     xAccessor: (d) => d.key,
     yAccessor: (d) => d.value,
   };
-  // <AnimatedLineSeries dataKey="Line 1" data={hearingsPerYear} {...accessors} />
 
   return (
     <div className={classes.root}>
@@ -68,37 +66,38 @@ export default function HearingDashboard() {
       {!loading && (
         <div>
           <Grid container spacing={3}>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={4} className={classes.card}>
               <Typography gutterBottom variant="h6" align="center">
                 Total Hearings
                 <br />
                 {hearingCount}
               </Typography>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} sm={8} className={classes.card}>
               <Typography gutterBottom variant="h6" align="center">
-                <XYChart height={300} xScale={{ type: 'band' }} yScale={{ type: 'linear' }}>
-                  <AnimatedAxis orientation="bottom" />
-                  <AnimatedAxis orientation="left" />
-                  <AnimatedLineSeries dataKey="Line 1" data={hearingsPerYear} {...accessors} />
-                  <Tooltip
-                    snapTooltipToDatumX
-                    snapTooltipToDatumY
-                    showVerticalCrosshair
-                    showSeriesGlyphs
-                    renderTooltip={({ tooltipData, colorScale }) => (
-                      <div>
-                        <div style={{ color: colorScale(tooltipData.nearestDatum.key) }}>
-                          {tooltipData.nearestDatum.key}
-                        </div>
-                        {accessors.xAccessor(tooltipData.nearestDatum.datum)}
-                        {', '}
-                        {accessors.yAccessor(tooltipData.nearestDatum.datum)}
-                      </div>
-                    )}
-                  />
-                </XYChart>
+                Hearings per Year
               </Typography>
+              <XYChart height={300} xScale={{ type: 'band' }} yScale={{ type: 'linear' }}>
+                <AnimatedAxis orientation="bottom" />
+                <AnimatedAxis orientation="left" />
+                <AnimatedLineSeries dataKey="Hearings per year" data={hearingsPerYear} {...accessors} />
+                <Tooltip
+                  snapTooltipToDatumX
+                  snapTooltipToDatumY
+                  showVerticalCrosshair
+                  showSeriesGlyphs
+                  renderTooltip={({ tooltipData, colorScale }) => (
+                    <div>
+                      <div style={{ color: colorScale(tooltipData.nearestDatum.key) }}>
+                        {tooltipData.nearestDatum.key}
+                      </div>
+                      {accessors.xAccessor(tooltipData.nearestDatum.datum)}
+                      {', '}
+                      {accessors.yAccessor(tooltipData.nearestDatum.datum)}
+                    </div>
+                  )}
+                />
+              </XYChart>
             </Grid>
             <Grid item xs={12}>
               <MaterialTable
