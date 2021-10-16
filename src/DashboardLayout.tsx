@@ -7,6 +7,10 @@ import clsx from 'clsx';
 import React from 'react';
 import Copyright from 'src/Copyright';
 import Link from 'src/Link';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const drawerWidth = 240;
 
@@ -36,9 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
-    },
-    menuButton: {
-      marginRight: 36,
     },
     hide: {
       display: 'none',
@@ -83,12 +84,46 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100vw',
       padding: theme.spacing(3),
     },
+    menuButton: {
+      color: 'white',
+      marginRight: 36,
+    },
   })
 );
 
 export default function DashboardLayout({ children }: { children: JSX.Element | JSX.Element[] }) {
   const classes = useStyles();
-  const [open] = React.useState(false);
+  const [open, setOpen] = React.useState(null);
+
+  const committees = [
+    'Armed',
+    'JEC',
+    'Health',
+    'Budget',
+    'Judiciary',
+    'Approporiations',
+    'SBC',
+    'Intelligence',
+    'Agriculture',
+    'Commerce',
+    'Rules',
+    'Indian Affairs',
+    'Finance',
+    'Energy',
+    'Homeland Security',
+    'Foreign',
+    'Enviroment',
+    'Banking',
+    'Veterans',
+  ];
+
+  const handleClick = (event: any) => {
+    setOpen(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setOpen(null);
+  };
 
   return (
     <div className={classes.root}>
@@ -114,8 +149,19 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
               </Typography>
             </a>
           </Link>
+          <Button className={classes.menuButton} onClick={handleClick}>
+            <MenuIcon />
+          </Button>
         </Toolbar>
       </AppBar>
+
+      <Menu id="simple-menu" anchorEl={open} keepMounted={false} open={Boolean(open)} onClose={handleClose}>
+        {committees.map((c, index) => (
+          <MenuItem onClick={handleClose}>
+            <Link href={`/committee/${c}`}>{c}</Link>
+          </MenuItem>
+        ))}
+      </Menu>
 
       <main className={classes.content}>
         <div className={classes.toolbar} />

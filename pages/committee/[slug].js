@@ -21,37 +21,36 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default function HearingDashboard() {
+export async function getServerSideProps(context) {
+  const committee = context.query.slug;
+  let csv_data = await d3.csv(
+    'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv'
+  );
+  csv_data = csv_data.filter((d) => d.Committee === committee);
+  return {
+    props: { committee: committee, data: csv_data },
+  };
+}
+
+export default function HearingDashboard(props) {
   const classes = useStyles();
-
-  const [data, setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const router = useRouter();
-  const committee = router.query.slug;
   const date_format = d3.timeParse('%m/%d/%y');
-
-  React.useEffect(() => {
-    d3.csv(
-      'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv'
-    ).then((data) => {
-      data = data.filter((d) => d.Committee === 'Enviroment');
-      data = data.map((d) => ({ ...d, Year: date_format(d['Date']).getFullYear() }));
-      console.log(data);
-      setData(data);
-      setLoading(false);
-    });
-    return () => undefined;
-  }, []);
+  console.log(props);
+  const [data, setData] = React.useState(
+    props.data.map((d) => ({ ...d, Year: date_format(d['Date'])?.getFullYear() }))
+  );
+  const [loading, setLoading] = React.useState(false);
+  const [committee, updateCommittee] = React.useState(props.committee);
+  const router = useRouter();
 
   const hearingCount = data.length;
 
   const rollup = d3.rollups(
     data,
     (v) => v.length,
-    (d) => d.Year
+    (d) => parseInt(d.Date.split('/')[2])
   );
   const hearingsPerYear = Array.from(rollup, ([key, value]) => ({ key, value })).reverse();
-  console.log(hearingsPerYear);
   const accessors = {
     xAccessor: (d) => d.key,
     yAccessor: (d) => d.value,
