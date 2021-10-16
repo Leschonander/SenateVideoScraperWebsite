@@ -33,14 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
       }),
     },
     footer: {},
-    appBarShift: {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
     hide: {
       display: 'none',
     },
@@ -48,26 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',
-    },
-    drawerOpen: {
-      background: '#223741',
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    drawerClose: {
-      background: '#223741',
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      overflowX: 'hidden',
-      width: theme.spacing(7) + 1,
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
-      },
     },
     toolbar: {
       display: 'flex',
@@ -149,13 +121,18 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
               </Typography>
             </a>
           </Link>
+          <Button className={classes.menuButton} onClick={handleClick}>
+            <MenuIcon />
+          </Button>
         </Toolbar>
       </AppBar>
 
       <Menu id="simple-menu" anchorEl={open} keepMounted={false} open={Boolean(open)} onClose={handleClose}>
         {committees.map((c, index) => (
           <MenuItem onClick={handleClose}>
-            <Link href={`/committee/${c}`}>{c}</Link>
+            <Link href="/committee/[slug]" as={`/committee/${c}`}>
+              {c}
+            </Link>
           </MenuItem>
         ))}
       </Menu>
