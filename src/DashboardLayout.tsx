@@ -149,9 +149,6 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
               </Typography>
             </a>
           </Link>
-          <Button className={classes.menuButton} onClick={handleClick}>
-            <MenuIcon />
-          </Button>
         </Toolbar>
       </AppBar>
 
