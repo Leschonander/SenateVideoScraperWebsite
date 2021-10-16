@@ -21,14 +21,21 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default function HearingDashboard() {
-  const classes = useStyles();
+export async function getServerSideProps(context) {
+  const committee = context.query.slug;
 
+  return {
+    props: { committee: committee },
+  };
+}
+
+export default function HearingDashboard(props) {
+  const classes = useStyles();
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [committee, updateCommittee] = React.useState(props.committee);
   const router = useRouter();
-  const committee = router.query.slug;
-  console.log(committee);
+  //console.log(committee);
   const date_format = d3.timeParse('%m/%d/%y');
 
   React.useEffect(() => {
@@ -36,13 +43,13 @@ export default function HearingDashboard() {
       'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv'
     ).then((data) => {
       data = data.filter((d) => d.Committee === committee);
-      data = data.map((d) => ({ ...d, Year: date_format(d['Date']).getFullYear() }));
+      data = data.map((d) => ({ ...d, Year: date_format(d['Date'])?.getFullYear() }));
       console.log(data);
       setData(data);
       setLoading(false);
     });
     return () => undefined;
-  }, []);
+  }, [committee]);
 
   const hearingCount = data.length;
 
