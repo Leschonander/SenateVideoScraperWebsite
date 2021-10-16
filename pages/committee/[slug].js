@@ -28,13 +28,14 @@ export default function HearingDashboard() {
   const [loading, setLoading] = React.useState(true);
   const router = useRouter();
   const committee = router.query.slug;
+  console.log(committee);
   const date_format = d3.timeParse('%m/%d/%y');
 
   React.useEffect(() => {
     d3.csv(
       'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv'
     ).then((data) => {
-      data = data.filter((d) => d.Committee === 'Enviroment');
+      data = data.filter((d) => d.Committee === committee);
       data = data.map((d) => ({ ...d, Year: date_format(d['Date']).getFullYear() }));
       console.log(data);
       setData(data);
