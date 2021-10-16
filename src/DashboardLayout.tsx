@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
+import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
@@ -33,14 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
       }),
     },
     footer: {},
-    appBarShift: {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
     hide: {
       display: 'none',
     },
@@ -48,26 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',
-    },
-    drawerOpen: {
-      background: '#223741',
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    drawerClose: {
-      background: '#223741',
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      overflowX: 'hidden',
-      width: theme.spacing(7) + 1,
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
-      },
     },
     toolbar: {
       display: 'flex',
@@ -87,6 +60,10 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       color: 'white',
       marginRight: 36,
+    },
+    linkStyle: {
+      textDecoration: 'none',
+      color: 'rgba(0, 0, 0, 0.87)',
     },
   })
 );
@@ -128,12 +105,7 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Link className={classes.title} href="/">
             <a>
@@ -149,13 +121,22 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
               </Typography>
             </a>
           </Link>
+          <Button className={classes.menuButton} onClick={handleClick}>
+            <MenuIcon />
+          </Button>
         </Toolbar>
       </AppBar>
 
       <Menu id="simple-menu" anchorEl={open} keepMounted={false} open={Boolean(open)} onClose={handleClose}>
         {committees.map((c, index) => (
-          <MenuItem onClick={handleClose}>
-            <Link href={`/committee/${c}`}>{c}</Link>
+          <MenuItem
+            onClick={() => {
+              handleClose();
+            }}
+          >
+            <a href={`/committee/${c}`} className={classes.linkStyle}>
+              {c}
+            </a>
           </MenuItem>
         ))}
       </Menu>
