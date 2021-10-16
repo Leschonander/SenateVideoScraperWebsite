@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
+import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
@@ -59,6 +60,10 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       color: 'white',
       marginRight: 36,
+    },
+    linkStyle: {
+      textDecoration: 'none',
+      color: 'rgba(0, 0, 0, 0.87)',
     },
   })
 );
@@ -129,10 +134,14 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
 
       <Menu id="simple-menu" anchorEl={open} keepMounted={false} open={Boolean(open)} onClose={handleClose}>
         {committees.map((c, index) => (
-          <MenuItem onClick={handleClose}>
-            <Link href="/committee/[slug]" as={`/committee/${c}`}>
+          <MenuItem
+            onClick={() => {
+              handleClose();
+            }}
+          >
+            <a href={`/committee/${c}`} className={classes.linkStyle}>
               {c}
-            </Link>
+            </a>
           </MenuItem>
         ))}
       </Menu>
