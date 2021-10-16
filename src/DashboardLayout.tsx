@@ -41,9 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
-    menuButton: {
-      marginRight: 36,
-    },
     hide: {
       display: 'none',
     },
@@ -89,6 +86,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     menuButton: {
       color: 'white',
+      marginRight: 36,
     },
   })
 );
