@@ -37,7 +37,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function LastWeekDashboard(props: any) {
+export default function LastWeekDashboard(props) {
   const classes = useStyles();
 
   const [data, setData] = React.useState(props.data);
