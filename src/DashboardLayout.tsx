@@ -144,9 +144,7 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <div className={classes.pageWrapper}>{children}</div>
-        <div className={classes.footer}>
-          <Copyright />
-        </div>
+        <div className={classes.footer}></div>
       </main>
     </div>
   );
