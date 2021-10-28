@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       color: 'white',
       marginRight: '10px',
-      [theme.breakpoints.down('450')]: {
+      [theme.breakpoints.down(450)]: {
         fontSize: '12px',
       },
     },
