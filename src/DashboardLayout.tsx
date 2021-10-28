@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme: Theme) =>
         fontSize: '12px',
       },
     },
+    titleAbout: {
+      color: 'white',
+      marginRight: '10px',
+    },
     appBar: {
       background: '#222222',
       zIndex: theme.zIndex.drawer + 1,
@@ -133,9 +137,9 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
                 </Typography>
               </a>
             </Link>
-            <Link className={classes.title} href="/about">
+            <Link className={classes.titleAbout} href="/about">
               <a>
-                <Typography variant="h6" noWrap>
+                <Typography variant="h6" noWrap style={{ marginRight: '10px' }}>
                   About
                 </Typography>
               </a>
