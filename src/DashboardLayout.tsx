@@ -1,6 +1,6 @@
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       color: 'white',
       marginRight: '10px',
+      [theme.breakpoints.down('450')]: {
+        fontSize: '12px',
+      },
     },
     appBar: {
       background: '#222222',
@@ -72,8 +75,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function DashboardLayout({ children }: { children: JSX.Element | JSX.Element[] }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(null);
-  const matches = useMediaQuery('(max-width:475px)');
-  console.log(matches);
+  const matches = useMediaQuery('(max-width:750px)');
+
   const committees = [
     'Armed',
     'JEC',
@@ -110,9 +113,9 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
       <AppBar position="fixed" className={classes.appBar}>
         {matches === true ? (
           <Toolbar>
-            <Link className={classes.title} href="/">
+            <Link href="/">
               <a>
-                <Typography variant="h6" noWrap>
+                <Typography variant="h6" noWrap className={classes.title}>
                   Senate Committee Hearing Repository
                 </Typography>
               </a>
