@@ -8,6 +8,9 @@ import React from 'react';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: { paddingTop: theme.spacing(2) },
+    colorSpan: {
+      textDecorationLine: 'underline',
+    },
   })
 );
 
@@ -30,9 +33,24 @@ export default function HearingDashboard() {
 
   return (
     <div className={classes.root}>
-      <Typography gutterBottom variant="h4" align="center">
-        Welcome back
-      </Typography>
+      <div>
+        <p>
+          There have been <span className={classes.colorSpan}>{loading === false ? data.length : '?'}</span> hearings
+          collected so far.
+        </p>
+
+        <p>
+          This service exists because surprisingly, the Senate does not have a central repository for the hearings. In
+          response to this, I built up a scraper to scrape said hearings and aggergate this data. You can find this{' '}
+          <a href="https://github.com/Leschonander/SenateVideoScraper">here</a>. There you can look at the code, see the
+          various csv's for the a given a committee.
+        </p>
+
+        <p>
+          To actually use this service, you can use the search bar contained in the table to search for a specific
+          hearing. You can also go to the bottom of the page and flip between pages as well.
+        </p>
+      </div>
       {loading && <div>Senate Committee Hearing data loading...</div>}
       {!loading && (
         <div>

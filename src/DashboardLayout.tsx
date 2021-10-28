@@ -1,6 +1,6 @@
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
@@ -12,6 +12,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useRouter } from 'next/router';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const drawerWidth = 240;
 
@@ -22,6 +23,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     listItem: { color: 'white' },
     title: {
+      color: 'white',
+      marginRight: '10px',
+      [theme.breakpoints.down(450)]: {
+        fontSize: '12px',
+      },
+    },
+    titleAbout: {
       color: 'white',
       marginRight: '10px',
     },
@@ -71,6 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function DashboardLayout({ children }: { children: JSX.Element | JSX.Element[] }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(null);
+  const matches = useMediaQuery('(max-width:750px)');
 
   const committees = [
     'Armed',
@@ -106,39 +115,122 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Link className={classes.title} href="/">
-            <a>
-              <Typography variant="h6" noWrap>
-                Senate Committee Hearing Repository
-              </Typography>
-            </a>
-          </Link>
-          <Link className={classes.title} href="/about">
-            <a>
-              <Typography variant="h6" noWrap>
-                About
-              </Typography>
-            </a>
-          </Link>
-          <Button className={classes.menuButton} onClick={handleClick}>
-            <MenuIcon />
-          </Button>
-        </Toolbar>
+        {matches === true ? (
+          <Toolbar>
+            <Link href="/">
+              <a>
+                <Typography variant="h6" noWrap className={classes.title}>
+                  Senate Committee Hearing Repository
+                </Typography>
+              </a>
+            </Link>
+            <Button className={classes.menuButton} onClick={handleClick}>
+              <MenuIcon />
+            </Button>
+          </Toolbar>
+        ) : (
+          <Toolbar>
+            <Link className={classes.title} href="/">
+              <a>
+                <Typography variant="h6" noWrap>
+                  Senate Committee Hearing Repository
+                </Typography>
+              </a>
+            </Link>
+            <Link className={classes.titleAbout} href="/about">
+              <a>
+                <Typography variant="h6" noWrap style={{ marginRight: '10px' }}>
+                  About
+                </Typography>
+              </a>
+            </Link>
+
+            <Link className={classes.title} href="/last_week">
+              <a>
+                <Typography variant="h6" noWrap>
+                  Hearings last week
+                </Typography>
+              </a>
+            </Link>
+
+            <Link
+              className={classes.title}
+              href="https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv"
+              passhref
+            >
+              <a>
+                <Typography variant="h6" noWrap>
+                  Data
+                </Typography>
+              </a>
+            </Link>
+            <Button className={classes.menuButton} onClick={handleClick}>
+              <MenuIcon />
+            </Button>
+          </Toolbar>
+        )}
       </AppBar>
 
       <Menu id="simple-menu" anchorEl={open} keepMounted={false} open={Boolean(open)} onClose={handleClose}>
-        {committees.map((c, index) => (
-          <MenuItem
-            onClick={() => {
-              handleClose();
-            }}
-          >
-            <a href={`/committee/${c}`} className={classes.linkStyle}>
-              {c}
-            </a>
-          </MenuItem>
-        ))}
+        {matches === true ? (
+          <>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              <a href={`/about`} className={classes.linkStyle}>
+                About
+              </a>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              <a href={`/last_week`} className={classes.linkStyle}>
+                Hearings last week
+              </a>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              <a
+                href={`https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv`}
+                className={classes.linkStyle}
+              >
+                Data
+              </a>
+            </MenuItem>
+            {committees.map((c, index) => (
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                }}
+              >
+                <a href={`/committee/${c}`} className={classes.linkStyle}>
+                  {c}
+                </a>
+              </MenuItem>
+            ))}
+          </>
+        ) : (
+          <>
+            {committees.map((c, index) => (
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                }}
+              >
+                <a href={`/committee/${c}`} className={classes.linkStyle}>
+                  {c}
+                </a>
+              </MenuItem>
+            ))}
+          </>
+        )}
       </Menu>
 
       <main className={classes.content}>
