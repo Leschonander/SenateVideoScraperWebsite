@@ -47,7 +47,7 @@ export default function HearingDashboard() {
     return p;
   }, {});
 
-  counts = Object.keys(datum).map((key: any) => ({ key: key, value: datum[key] }));
+  counts = Object.keys(counts).map((key: any) => ({ key: key, value: counts[key] }));
   const accessors = {
     xAccessor: (d) => d.key,
     yAccessor: (d) => d.value,
