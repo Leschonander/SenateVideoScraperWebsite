@@ -86,6 +86,13 @@ export default function AboutPage(props: any) {
             Coalition and Lincoln Network.
           </p>
           <Typography gutterBottom variant="h6" align="left">
+            Contact information
+          </Typography>
+          <p>
+            You can reach the primary developer of this project at{' '}
+            <a href="https://twitter.com/LarsESchonander">@LarsESchonander</a>.
+          </p>
+          <Typography gutterBottom variant="h6" align="left">
             Bulk download
           </Typography>
 
