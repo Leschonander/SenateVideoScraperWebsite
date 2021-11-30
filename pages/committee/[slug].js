@@ -27,7 +27,7 @@ export async function getServerSideProps(context) {
     'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv'
   );
   csv_data = csv_data.filter((d) => d.Committee === committee);
-  csv_data = csv_data.map((c) => ({ ...c, Witnesses: eval(c['Witnesses']).join(' ') }));
+  csv_data = csv_data.map((c) => ({ ...c, Witnesses: eval(c['Witnesses']) }));
   return {
     props: { committee: committee, data: csv_data },
   };
