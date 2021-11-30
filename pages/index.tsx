@@ -22,12 +22,14 @@ export default function HearingDashboard() {
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
+  const url =
+    'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv';
+
   React.useEffect(() => {
-    d3.csv(
-      'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv'
-    ).then((d) => {
-      console.log(d);
-      setData(d);
+    d3.csv(url).then((d) => {
+      let d_cleaned = d.map((c: any) => ({ ...c, Witnesses: eval(c['Witnesses']) }));
+      console.log(d_cleaned);
+      setData(d_cleaned);
       setLoading(false);
     });
     return () => undefined;
@@ -111,6 +113,7 @@ export default function HearingDashboard() {
               { title: 'Location', field: 'Location' },
               { title: 'Committee', field: 'Committee' },
               { title: 'Video Url', field: 'video_url' },
+              { title: 'Witnesses', field: 'Witnesses' },
             ]}
             data={data}
             title="Senate Committee Hearings"

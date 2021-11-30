@@ -31,6 +31,7 @@ export async function getServerSideProps(context) {
   csv_data = csv_data.filter(function (d) {
     return new Date(d.Date) > sevenDays;
   });
+  csv_data = csv_data.map((c) => ({ ...c, Witnesses: eval(c['Witnesses']) }));
 
   return {
     props: { data: csv_data, total_rows: csv_data.length },
@@ -93,6 +94,7 @@ export default function LastWeekDashboard(props) {
                   { title: 'Location', field: 'Location' },
                   { title: 'Committee', field: 'Committee' },
                   { title: 'Video Url', field: 'video_url' },
+                  { title: 'Witnesses', field: 'Witnesses' },
                 ]}
                 data={data}
                 title="Senate Committee Hearings"
