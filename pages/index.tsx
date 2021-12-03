@@ -16,24 +16,51 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function HearingDashboard() {
-  const classes = useStyles();
+export async function getServerSideProps(context) {
+  let csv_data = await d3.csv(
+    'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv'
+  );
 
-  const [data, setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  /*
+  csv_data = csv_data.map((c) => ({ ...c, Witnesses: eval(c['Witnesses']) }));
 
-  const url =
-    'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv';
-
-  React.useEffect(() => {
-    d3.csv(url).then((d) => {
-      let d_cleaned = d.map((c: any) => ({ ...c, Witnesses: eval(c['Witnesses']) }));
-      console.log(d_cleaned);
-      setData(d_cleaned);
-      setLoading(false);
+  
+  csv_data = csv_data.map((item) => {
+      if (item.Witnesses !== []) {
+        const updatedItem = {
+          ...item,
+          Witnesses: item.Witnesses.join("\n"),
+        };
+        return updatedItem;
+      }
+      return item;
     });
-    return () => undefined;
-  }, []);
+  
+    */
+  return {
+    props: { data: csv_data },
+  };
+}
+
+export default function HearingDashboard(props) {
+  const classes = useStyles();
+  console.log(props);
+  const [data, setData] = React.useState(
+    props.data
+      .map((c: any) => ({ ...c, Witnesses: eval(c['Witnesses']) }))
+      .map((item: any) => {
+        if (Array.isArray(item.Witnesses)) {
+          const updatedItem = {
+            ...item,
+            Witnesses: item.Witnesses.join('\n'),
+          };
+          return updatedItem;
+        }
+        return item;
+      })
+  );
+
+  const [loading, setLoading] = React.useState(false);
 
   let counts = data.reduce((p, d) => {
     let year = new Date(d.Date).getFullYear();
