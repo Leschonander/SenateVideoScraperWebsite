@@ -28,6 +28,18 @@ export async function getServerSideProps(context) {
   );
   csv_data = csv_data.filter((d) => d.Committee === committee);
   csv_data = csv_data.map((c) => ({ ...c, Witnesses: eval(c['Witnesses']) }));
+
+  csv_data = csv_data.map((item) => {
+    if (Array.isArray(item.Witnesses)) {
+      const updatedItem = {
+        ...item,
+        Witnesses: item.Witnesses.join('\n'),
+      };
+      return updatedItem;
+    }
+    return item;
+  });
+
   return {
     props: { committee: committee, data: csv_data },
   };

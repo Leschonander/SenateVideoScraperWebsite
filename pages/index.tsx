@@ -27,7 +27,19 @@ export default function HearingDashboard() {
 
   React.useEffect(() => {
     d3.csv(url).then((d) => {
-      let d_cleaned = d.map((c: any) => ({ ...c, Witnesses: eval(c['Witnesses']) }));
+      let d_cleaned = d
+        .map((c: any) => ({ ...c, Witnesses: eval(c['Witnesses']) }))
+        .map((item: any) => {
+          if (Array.isArray(item.Witnesses)) {
+            const updatedItem = {
+              ...item,
+              Witnesses: item.Witnesses.join('\n'),
+            };
+            return updatedItem;
+          }
+          return item;
+        });
+
       console.log(d_cleaned);
       setData(d_cleaned);
       setLoading(false);
