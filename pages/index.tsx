@@ -25,6 +25,10 @@ export default function HearingDashboard() {
   const url =
     'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv';
 
+  function onlyUnique(value: any, index: any, self: any) {
+    return self.indexOf(value) === index;
+  }
+
   React.useEffect(() => {
     d3.csv(url).then((d) => {
       let d_cleaned = d
@@ -33,14 +37,20 @@ export default function HearingDashboard() {
           if (Array.isArray(item.Witnesses)) {
             const updatedItem = {
               ...item,
-              Witnesses: item.Witnesses.join('\n'),
+              Witnesses: item.Witnesses.filter((v: any, i: any, a: any) => a.indexOf(v) === i)
+                .join('\n')
+                .replace('Chairman', '')
+                .replace('Opening Statement', '')
+                .replace('Ranking Member', '')
+                .replace('opening statement', ''),
             };
+
             return updatedItem;
           }
           return item;
         });
 
-      console.log(d_cleaned);
+      // console.log(d_cleaned);
       setData(d_cleaned);
       setLoading(false);
     });
@@ -119,10 +129,8 @@ export default function HearingDashboard() {
           <MaterialTable
             columns={[
               { title: 'Date', field: 'Date' },
-              { title: 'Time', field: 'Time' },
               { title: 'URL', field: 'URL' },
               { title: 'Title', field: 'Title' },
-              { title: 'Location', field: 'Location' },
               { title: 'Committee', field: 'Committee' },
               { title: 'Video Url', field: 'video_url' },
               { title: 'Witnesses', field: 'Witnesses' },

@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) =>
 
 export async function getServerSideProps(context) {
   const committee = context.query.slug;
+  console.log(committee);
   let csv_data = await d3.csv(
     'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv'
   );
@@ -33,9 +34,20 @@ export async function getServerSideProps(context) {
     if (Array.isArray(item.Witnesses)) {
       const updatedItem = {
         ...item,
-        Witnesses: item.Witnesses.join('\n'),
+        Witnesses: item.Witnesses.filter((v, i, a) => a.indexOf(v) === i)
+          .join('\n')
+          .replace('Chairman', '')
+          .replace('Opening Statement', '')
+          .replace('Ranking Member', '')
+          .replace('opening statement', ''),
       };
       return updatedItem;
+    } else if (item.Witnesses === undefined) {
+      const updatedItemUndefined = {
+        ...item,
+        Witnesses: '',
+      };
+      return updatedItemUndefined;
     }
     return item;
   });
