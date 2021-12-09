@@ -4,6 +4,9 @@ import MaterialTable from 'material-table';
 import * as d3 from 'd3';
 import { AnimatedAxis, AnimatedGrid, AnimatedLineSeries, XYChart, Tooltip } from '@visx/xychart';
 import Grid from '@material-ui/core/Grid';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import React from 'react';
 
@@ -20,14 +23,11 @@ export default function HearingDashboard() {
   const classes = useStyles();
 
   const [data, setData] = React.useState([]);
+  const [dataMaster, setDataMaster] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
   const url =
     'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv';
-
-  function onlyUnique(value: any, index: any, self: any) {
-    return self.indexOf(value) === index;
-  }
 
   React.useEffect(() => {
     d3.csv(url).then((d) => {
@@ -52,10 +52,37 @@ export default function HearingDashboard() {
 
       // console.log(d_cleaned);
       setData(d_cleaned);
+      setDataMaster(d_cleaned);
       setLoading(false);
     });
     return () => undefined;
   }, []);
+
+  const [yearsSelected, setYearsSelected] = React.useState([]);
+  React.useEffect(() => {
+    let NewData = dataMaster.map((d: any) => ({ ...d, Year: new Date(d.Date).getFullYear() }));
+    if (!Array.isArray(yearsSelected) || !yearsSelected.length) {
+      setData(dataMaster);
+    } else {
+      NewData = NewData.filter((d) => yearsSelected.includes(d.Year));
+      setData(NewData);
+    }
+  }, [yearsSelected]);
+  const years = Array(26)
+    .fill(1996)
+    .map((x, y) => x + y);
+  const handleChange = (event: any) => {
+    const {
+      target: { value },
+    } = event;
+    setYearsSelected(typeof value === 'string' ? value.split(',') : value);
+
+    if (typeof value === 'string') {
+      // console.log(value)
+    } else {
+      // console.log(value)
+    }
+  };
 
   let counts = data.reduce((p, d) => {
     let year = new Date(d.Date).getFullYear();
@@ -97,6 +124,17 @@ export default function HearingDashboard() {
             To actually use this service, you can use the search bar contained in the table to search for a specific
             hearing. You can also go to the bottom of the page and flip between pages as well.
           </p>
+          <strong>Additional Filter Options</strong>
+          <div>
+            <InputLabel>Year</InputLabel>
+            <Select id="year-selector" multiple value={yearsSelected} onChange={handleChange}>
+              {years.map((year) => (
+                <MenuItem key={year} value={year}>
+                  {year}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography gutterBottom variant="h6" align="center">
