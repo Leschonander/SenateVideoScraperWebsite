@@ -60,7 +60,7 @@ export async function getServerSideProps(context) {
 export default function HearingDashboard(props) {
   const classes = useStyles();
   const date_format = d3.timeParse('%m/%d/%y');
-  console.log(props);
+
   const [data, setData] = React.useState(
     props.data.map((d) => ({ ...d, Year: date_format(d['Date'])?.getFullYear() }))
   );
@@ -75,7 +75,8 @@ export default function HearingDashboard(props) {
     (v) => v.length,
     (d) => parseInt(d.Date.split('/')[2])
   );
-  const hearingsPerYear = Array.from(rollup, ([key, value]) => ({ key, value })).reverse();
+  let hearingsPerYear = Array.from(rollup, ([key, value]) => ({ key, value })).reverse();
+  hearingsPerYear = hearingsPerYear.sort((a, b) => a.key - b.key);
   const accessors = {
     xAccessor: (d) => d.key,
     yAccessor: (d) => d.value,
