@@ -4,6 +4,9 @@ import MaterialTable from 'material-table';
 import * as d3 from 'd3';
 import { AnimatedAxis, AnimatedGrid, AnimatedLineSeries, XYChart, Tooltip } from '@visx/xychart';
 import Grid from '@material-ui/core/Grid';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 import { useRouter } from 'next/router';
 
 import React from 'react';
@@ -64,9 +67,37 @@ export default function HearingDashboard(props) {
   const [data, setData] = React.useState(
     props.data.map((d) => ({ ...d, Year: date_format(d['Date'])?.getFullYear() }))
   );
+  const [dataMaster, setDataMaster] = React.useState(data);
+
   const [loading, setLoading] = React.useState(false);
   const [committee, updateCommittee] = React.useState(props.committee);
   const router = useRouter();
+
+  const [yearsSelected, setYearsSelected] = React.useState([]);
+  React.useEffect(() => {
+    let NewData = dataMaster.map((d) => ({ ...d, Year: new Date(d.Date).getFullYear() }));
+    if (!Array.isArray(yearsSelected) || !yearsSelected.length) {
+      setData(dataMaster);
+    } else {
+      NewData = NewData.filter((d) => yearsSelected.includes(d.Year));
+      setData(NewData);
+    }
+  }, [yearsSelected]);
+  const years = Array(26)
+    .fill(1996)
+    .map((x, y) => x + y);
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setYearsSelected(typeof value === 'string' ? value.split(',') : value);
+
+    if (typeof value === 'string') {
+      // console.log(value)
+    } else {
+      // console.log(value)
+    }
+  };
 
   const hearingCount = data.length;
 
@@ -125,13 +156,24 @@ export default function HearingDashboard(props) {
               </XYChart>
             </Grid>
             <Grid item xs={12}>
+              <strong>Additional Filter Options</strong>
+              <div>
+                <InputLabel>Year</InputLabel>
+                <Select id="year-selector" multiple value={yearsSelected} onChange={handleChange}>
+                  {years.map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+            </Grid>
+            <Grid item xs={12}>
               <MaterialTable
                 columns={[
                   { title: 'Date', field: 'Date' },
-                  { title: 'Time', field: 'Time' },
                   { title: 'URL', field: 'URL' },
                   { title: 'Title', field: 'Title' },
-                  { title: 'Location', field: 'Location' },
                   { title: 'Committee', field: 'Committee' },
                   { title: 'Video Url', field: 'video_url' },
                   { title: 'Witnesses', field: 'Witnesses' },
