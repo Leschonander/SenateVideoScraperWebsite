@@ -28,43 +28,26 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
 const tableIcons = {
-  // @ts-ignore
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  // @ts-ignore
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  // @ts-ignore
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  // @ts-ignore
   Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  // @ts-ignore
   DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  // @ts-ignore
   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  // @ts-ignore
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  // @ts-ignore
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  // @ts-ignore
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  // @ts-ignore
   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  // @ts-ignore
   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  // @ts-ignore
   PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  // @ts-ignore
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  // @ts-ignore
   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  // @ts-ignore
   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  // @ts-ignore
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  // @ts-ignore
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: { paddingTop: theme.spacing(2) },
     colorSpan: {
@@ -86,12 +69,12 @@ export default function HearingDashboard() {
   React.useEffect(() => {
     d3.csv(url).then((d) => {
       let d_cleaned = d
-        .map((c: any) => ({ ...c, Witnesses: eval(c['Witnesses']) }))
-        .map((item: any) => {
+        .map((c) => ({ ...c, Witnesses: eval(c['Witnesses']) }))
+        .map((item) => {
           if (Array.isArray(item.Witnesses)) {
             const updatedItem = {
               ...item,
-              Witnesses: item.Witnesses.filter((v: any, i: any, a: any) => a.indexOf(v) === i)
+              Witnesses: item.Witnesses.filter((v, i, a) => a.indexOf(v) === i)
                 .join('\n')
                 .replace('Chairman', '')
                 .replace('Opening Statement', '')
@@ -114,7 +97,7 @@ export default function HearingDashboard() {
 
   const [yearsSelected, setYearsSelected] = React.useState([]);
   React.useEffect(() => {
-    let NewData = dataMaster.map((d: any) => ({ ...d, Year: new Date(d.Date).getFullYear() }));
+    let NewData = dataMaster.map((d) => ({ ...d, Year: new Date(d.Date).getFullYear() }));
     if (!Array.isArray(yearsSelected) || !yearsSelected.length) {
       setData(dataMaster);
     } else {
@@ -125,7 +108,7 @@ export default function HearingDashboard() {
   const years = Array(26)
     .fill(1996)
     .map((x, y) => x + y);
-  const handleChange = (event: any) => {
+  const handleChange = (event) => {
     const {
       target: { value },
     } = event;
@@ -152,7 +135,7 @@ export default function HearingDashboard() {
     return p;
   }, {});
 
-  counts = Object.keys(counts).map((key: any) => ({ key: key, value: counts[key] }));
+  counts = Object.keys(counts).map((key) => ({ key: key, value: counts[key] }));
   const accessors = {
     xAccessor: (d) => d.key,
     yAccessor: (d) => d.value,
