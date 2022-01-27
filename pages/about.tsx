@@ -64,6 +64,14 @@ export default function AboutPage(props: any) {
             This website shows that is is possible to have a central location for all the hearings on the Senate side.
           </p>
 
+          <p>
+            To understand more why and how this was built, you can read this{' '}
+            <a href="https://lincolnpolicy.org/2022/video-from-all-senate-committee-proceedings-in-one-place/">
+              article
+            </a>
+            from Lincoln Network.
+          </p>
+
           <Typography gutterBottom variant="h6" align="left">
             Acknowledgements
           </Typography>
