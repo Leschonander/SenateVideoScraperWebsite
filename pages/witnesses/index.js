@@ -75,6 +75,10 @@ export default function WitnessDashboard() {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12}>
           <p>Tracking who speaks to congress</p>
+          <p>
+            To look for hearings on a specific witness, just go to "/witness/id of witness" to filter for hearings that
+            feature that witness.
+          </p>
         </Grid>
         <Grid item xs={12} sm={12}>
           {loading && <div>Senate Committee Hearing data witness loading...</div>}
