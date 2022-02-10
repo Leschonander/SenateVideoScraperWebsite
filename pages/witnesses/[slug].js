@@ -66,7 +66,7 @@ export async function getServerSideProps(context) {
   console.log(id);
 
   let csv_data_witness = await d3.csv(
-    'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/witnessList/wit_count.csv'
+    'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/wit_count.csv'
   );
 
   csv_data_witness = csv_data_witness.filter((d) => d.id === id);

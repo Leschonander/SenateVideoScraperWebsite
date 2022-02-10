@@ -153,6 +153,14 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
               </a>
             </Link>
 
+            <Link className={classes.title} href="/witnesses">
+              <a>
+                <Typography variant="h6" noWrap>
+                  Witnesses
+                </Typography>
+              </a>
+            </Link>
+
             <Link
               className={classes.title}
               href="https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv"
@@ -190,6 +198,15 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
             >
               <a href={`/last_week`} className={classes.linkStyle}>
                 Hearings last week
+              </a>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              <a href={`/witnesses`} className={classes.linkStyle}>
+                Witnesses
               </a>
             </MenuItem>
             <MenuItem

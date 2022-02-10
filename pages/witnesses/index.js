@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) =>
 
 export default function WitnessDashboard() {
   const classes = useStyles();
-  const url = 'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/witnessList/wit_count.csv';
+  const url = 'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/wit_count.csv';
 
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -74,7 +74,7 @@ export default function WitnessDashboard() {
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12}>
-          <p>Tracking who speaks to congress</p>
+          <p>Tracking who speaks to the Senate.</p>
           <p>
             To look for hearings on a specific witness, just go to "/witness/id of witness" to filter for hearings that
             feature that witness.
