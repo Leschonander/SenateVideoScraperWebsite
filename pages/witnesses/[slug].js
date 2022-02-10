@@ -80,7 +80,7 @@ export async function getServerSideProps(context) {
       if (item.Witnesses.includes(csv_data_witness[0].Witnesses)) {
         const updatedItem = {
           ...item,
-          Witnesses: item.Witnesses.join('\n'),
+          Witnesses: item.Witnesses.filter((v, i, a) => a.indexOf(v) === i).join('\n'),
         };
         return updatedItem;
       }
