@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function DashboardLayout({ children }: { children: JSX.Element | JSX.Element[] }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(null);
-  const matches = useMediaQuery('(max-width:750px)');
+  const matches = useMediaQuery('(max-width:850px)');
 
   const committees = [
     'Armed',
@@ -153,7 +153,7 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
               </a>
             </Link>
 
-            <Link className={classes.title} href="/witnesses">
+            <Link className={classes.title} href="/witnesses" style={{ marginRight: '10px', cursor: 'pointer' }}>
               <a>
                 <Typography variant="h6" noWrap>
                   Witnesses
