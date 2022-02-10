@@ -153,9 +153,9 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
               </a>
             </Link>
 
-            <Link className={classes.title} href="/witnesses" style={{ marginRight: '10px', cursor: 'pointer' }}>
+            <Link className={classes.title} href="/witnesses">
               <a>
-                <Typography variant="h6" noWrap>
+                <Typography variant="h6" noWrap style={{ marginRight: '10px', cursor: 'pointer' }}>
                   Witnesses
                 </Typography>
               </a>
