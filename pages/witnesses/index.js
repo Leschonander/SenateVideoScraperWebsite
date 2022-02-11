@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import Link from 'next/link';
 
 import React from 'react';
 import { forwardRef } from 'react';
@@ -99,6 +100,12 @@ export default function WitnessDashboard() {
                     csv: true,
                   },
                 }}
+                actions={[
+                  (rowData) => ({
+                    icon: () => <Link href={`/witnesses/${rowData.id}`}> Link</Link>,
+                    tooltip: 'To Witness Page',
+                  }),
+                ]}
               />
             </div>
           )}
