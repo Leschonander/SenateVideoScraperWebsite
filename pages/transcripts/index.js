@@ -1,14 +1,6 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import MaterialTable from 'material-table';
 import * as d3 from 'd3';
-import { AnimatedAxis, AnimatedGrid, AnimatedLineSeries, XYChart, Tooltip } from '@visx/xychart';
 import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import Link from 'next/link';
-
 import React from 'react';
 import { forwardRef } from 'react';
 
@@ -29,6 +21,14 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Fuse from 'fuse.js';
 import TextField from '@material-ui/core/TextField';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -101,16 +101,35 @@ export default function TranscriptDashboard(props) {
         </Grid>
         <Grid item xs={12} sm={12}></Grid>
         {searchData.length === 0 ? (
-          <>Empty</>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Hearing Name</TableCell>
+                  <TableCell>Transcript URL</TableCell>
+                </TableRow>
+              </TableHead>
+            </Table>
+          </TableContainer>
         ) : (
-          <>
-            {searchData.map((s) => (
-              <div>
-                <h3>{s.item.name}</h3>
-                <p>{s.item.url}</p>
-              </div>
-            ))}
-          </>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Hearing Name</TableCell>
+                  <TableCell>Transcript URL</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {searchData.map((s, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{s.item.name}</TableCell>
+                    <TableCell>{s.item.url}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
       </Grid>
     </div>
