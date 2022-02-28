@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) =>
 
 export async function getServerSideProps(context) {
   // May need to movie this to component side depending on how large it get's later on...
-  const url = 'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/transcripts/New_T_File.csv'; // transcript_text
+  const url = 'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/New_T_File.csv'; // transcript_text
   let data = await d3.csv(url);
 
   return {
