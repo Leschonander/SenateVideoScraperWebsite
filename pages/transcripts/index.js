@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) =>
 
 export async function getServerSideProps(context) {
   // May need to movie this to component side depending on how large it get's later on...
-  const url = 'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/transcripts/transcript_text.csv';
+  const url = 'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/transcripts/New_T_File.csv'; // transcript_text
   let data = await d3.csv(url);
 
   return {
@@ -95,8 +95,27 @@ export default function TranscriptDashboard(props) {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={12}>
-          <p>Search Senate Witness Transcripts</p>
+        <Grid item xs={12} sm={6}>
+          <h4>Search Senate Witness Transcripts</h4>
+          <p>FAQ</p>
+          <p>1. What is this search exactly searching?</p>
+          <p>
+            This search is a full-text-search of the text <i>contained</i> within the PDF's of peoples various
+            testimonies to the Senate. It is <i>not</i> a search of the titles of the various PDF's.
+          </p>
+
+          <p>2. Why is this important?</p>
+          <p>
+            At the moment, much like the hearings themselves, there is no easy way to search the text of the various
+            testimonies that witnesses have given over the years. By extracting the text from the testimonies and making
+            them searchable, it is easier to find out what past witnesses had said to Congress on various issues.
+          </p>
+
+          <p>3. Why is it a bit slow?</p>
+          <p>
+            The full text search at the moment is on the client side, it is currently being migrated to be done
+            differently to ensure a higher quality user experince.
+          </p>
           <TextField label="Search" value={searchText} onChange={handleChange} />
         </Grid>
         <Grid item xs={12} sm={12}></Grid>
