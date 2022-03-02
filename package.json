@@ -8,6 +8,7 @@
     "@material-ui/icons": "^4.11.2",
     "@types/d3": "6.7.0",
     "@visx/xychart": "^2.2.1",
+    "Elasticsearch": "elastic/Elasticsearch",
     "clsx": "^1.1.1",
     "csv": "^5.5.0",
     "d3": "6.7.0",
