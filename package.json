@@ -26,8 +26,7 @@
     "react-dom": "latest",
     "react-dropzone": "^11.3.2",
     "react-spring": "^9.3.0",
-    "stream": "^0.0.2",
-    "undici": "^4.14.1"
+    "stream": "^0.0.2"
   },
   "scripts": {
     "dev": "NODE_ENV=development next",
