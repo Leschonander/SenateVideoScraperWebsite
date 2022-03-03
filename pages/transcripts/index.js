@@ -65,9 +65,6 @@ export default function TranscriptDashboard() {
   const [data, setData] = React.useState([]);
   const [searchText, setSearchText] = React.useState('');
 
-  const truncateString = (string = '', maxLength = 50) =>
-    string.length > maxLength ? `${string.substring(0, maxLength)}…` : string;
-
   const searchQuery = async (text) => {
     event.preventDefault();
     const query = text;
