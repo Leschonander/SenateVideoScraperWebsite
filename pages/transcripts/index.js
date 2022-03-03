@@ -59,37 +59,36 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export async function getServerSideProps(context) {
-  // May need to movie this to component side depending on how large it get's later on...
-  const url = 'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/New_T_File.csv'; // transcript_text
-  let data = await d3.csv(url);
-
-  return {
-    props: { data: data },
-  };
-}
-
-export default function TranscriptDashboard(props) {
+export default function TranscriptDashboard() {
   const classes = useStyles();
 
-  const [data, setData] = React.useState(props.data);
-  const [searchData, setSearchData] = React.useState([]);
+  const [data, setData] = React.useState([]);
   const [searchText, setSearchText] = React.useState('');
-  const options = {
-    keys: ['name', 'text'],
+
+  const searchQuery = async (text) => {
+    event.preventDefault();
+    const query = text;
+    const res = await fetch('/api/search', {
+      method: 'POST',
+      body: JSON.stringify(query),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    let result = await res.json();
+    let result_cleaned = result['data'].map((d) => ({
+      name: d['_source']['name'],
+      url: d['_source']['url'],
+    }));
+
+    setData(result_cleaned);
   };
 
-  const truncateString = (string = '', maxLength = 50) =>
-    string.length > maxLength ? `${string.substring(0, maxLength)}…` : string;
-
-  const fuse = new Fuse(data, options);
   const handleChange = (event) => {
     setSearchText(event.target.value);
   };
 
   React.useEffect(() => {
-    const search_results = fuse.search(searchText);
-    setSearchData(search_results);
+    searchQuery(searchText);
   }, [searchText]);
 
   return (
@@ -101,7 +100,8 @@ export default function TranscriptDashboard(props) {
           <p>1. What is this search exactly searching?</p>
           <p>
             This search is a full-text-search of the text <i>contained</i> within the PDF's of peoples various
-            testimonies to the Senate. It is <i>not</i> a search of the titles of the various PDF's.
+            testimonies to the Senate. It is <i>not</i> a search of the titles of the various PDF's. It will return the
+            first 50 results.
           </p>
 
           <p>2. Why is this important?</p>
@@ -111,15 +111,10 @@ export default function TranscriptDashboard(props) {
             them searchable, it is easier to find out what past witnesses had said to Congress on various issues.
           </p>
 
-          <p>3. Why is it a bit slow?</p>
-          <p>
-            The full text search at the moment is on the client side, it is currently being migrated to be done
-            differently to ensure a higher quality user experince.
-          </p>
           <TextField label="Search" value={searchText} onChange={handleChange} />
         </Grid>
         <Grid item xs={12} sm={12}></Grid>
-        {searchData.length === 0 ? (
+        {data.length === 0 ? (
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -140,10 +135,10 @@ export default function TranscriptDashboard(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {searchData.map((s, index) => (
+                {data.map((s, index) => (
                   <TableRow key={index}>
-                    <TableCell>{s.item.name}</TableCell>
-                    <TableCell>{s.item.url}</TableCell>
+                    <TableCell>{s.name}</TableCell>
+                    <TableCell>{s.url}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@elastic/elasticsearch": "^7.0.0",
     "@material-ui/core": "4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@types/d3": "6.7.0",
     "@visx/xychart": "^2.2.1",
+    "Elasticsearch": "elastic/Elasticsearch",
     "clsx": "^1.1.1",
     "csv": "^5.5.0",
     "d3": "6.7.0",
+    "diagnostic-channel": "^1.1.0",
+    "dotenv": "^16.0.0",
     "fuse.js": "^6.5.3",
     "lunr": "^2.3.9",
     "material-table": "^1.69.3",
@@ -21,7 +25,8 @@
     "react": "latest",
     "react-dom": "latest",
     "react-dropzone": "^11.3.2",
-    "react-spring": "^9.3.0"
+    "react-spring": "^9.3.0",
+    "stream": "^0.0.2"
   },
   "scripts": {
     "dev": "NODE_ENV=development next",
