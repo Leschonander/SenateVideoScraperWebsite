@@ -97,7 +97,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function HearingDashboard(props) {
+export default function HearingDashboardaCommittee(props) {
   const classes = useStyles();
   const date_format = d3.timeParse('%m/%d/%y');
 
