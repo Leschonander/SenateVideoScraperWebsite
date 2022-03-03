@@ -1,4 +1,4 @@
-import { Client } from '@elastic/Elasticsearch';
+import { Client } from '@elastic/elasticsearch';
 //connect to Elasticsearch
 export async function connectToElasticsearch() {
   const ESS_CLOUD_ID = process.env.cloud_id;
