@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function DashboardLayout({ children }: { children: JSX.Element | JSX.Element[] }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(null);
-  const matches = useMediaQuery('(max-width:850px)');
+  const matches = useMediaQuery('(max-width:980px)');
 
   const committees = [
     'Armed',
@@ -132,7 +132,7 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
           <Toolbar>
             <Link className={classes.title} href="/">
               <a>
-                <Typography variant="h6" noWrap>
+                <Typography variant="h6" noWrap style={{ marginRight: '10px', cursor: 'pointer' }}>
                   Senate Committee Hearing Repository
                 </Typography>
               </a>
@@ -147,7 +147,7 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
 
             <Link className={classes.title} href="/last_week">
               <a>
-                <Typography variant="h6" noWrap>
+                <Typography variant="h6" noWrap style={{ marginRight: '10px', cursor: 'pointer' }}>
                   Hearings last week
                 </Typography>
               </a>
@@ -157,6 +157,14 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
               <a>
                 <Typography variant="h6" noWrap style={{ marginRight: '10px', cursor: 'pointer' }}>
                   Witnesses
+                </Typography>
+              </a>
+            </Link>
+
+            <Link className={classes.title} href="/transcripts">
+              <a>
+                <Typography variant="h6" noWrap style={{ marginRight: '10px', cursor: 'pointer' }}>
+                  Transcripts
                 </Typography>
               </a>
             </Link>
@@ -207,6 +215,15 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
             >
               <a href={`/witnesses`} className={classes.linkStyle}>
                 Witnesses
+              </a>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              <a href={`/transcripts`} className={classes.linkStyle}>
+                Transcripts
               </a>
             </MenuItem>
             <MenuItem
