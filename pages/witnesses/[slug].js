@@ -62,8 +62,14 @@ const useStyles = makeStyles((theme) =>
 );
 
 export async function getServerSideProps(context) {
+  function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  }
+  function replaceAll(str, match, replacement) {
+    return str.replace(new RegExp(escapeRegExp(match), 'g'), () => replacement);
+  }
+
   const id = context.query.slug;
-  console.log(id);
 
   let csv_data_witness = await d3.csv(
     'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/wit_count.csv'
@@ -77,7 +83,7 @@ export async function getServerSideProps(context) {
   csv_data_hearings = csv_data_hearings.map((c) => ({ ...c, Witnesses: eval(c['Witnesses']) }));
   csv_data_hearings = csv_data_hearings.map((c) => ({
     ...c,
-    'Witness Transcripts': eval(c['Witness Transcripts'].replaceAll('(', '[').replaceAll(')', ']')),
+    'Witness Transcripts': eval(replaceAll(replaceAll(c['Witness Transcripts'], '(', '['), ')', ']')),
   }));
   csv_data_hearings = csv_data_hearings.map((item) => {
     if (Array.isArray(item.Witnesses)) {
