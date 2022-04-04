@@ -30,6 +30,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import MaterialTable from 'material-table';
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -55,6 +57,9 @@ const useStyles = makeStyles((theme) =>
     root: { paddingTop: theme.spacing(2) },
     colorSpan: {
       textDecorationLine: 'underline',
+    },
+    tableStyle: {
+      width: '100%',
     },
   })
 );
@@ -126,24 +131,23 @@ export default function TranscriptDashboard() {
             </Table>
           </TableContainer>
         ) : (
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Hearing Name</TableCell>
-                  <TableCell>Transcript URL</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.map((s, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{s.name}</TableCell>
-                    <TableCell>{s.url}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <div className={classes.tableStyle}>
+            <MaterialTable
+              icons={tableIcons}
+              columns={[
+                { title: 'Name', field: 'name' },
+                { title: 'URL', field: 'url' },
+              ]}
+              data={data}
+              title="Senate Committee Hearings"
+              options={{
+                exportAllData: true,
+                exportButton: {
+                  csv: true,
+                },
+              }}
+            />
+          </div>
         )}
       </Grid>
     </div>

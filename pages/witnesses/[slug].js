@@ -62,8 +62,14 @@ const useStyles = makeStyles((theme) =>
 );
 
 export async function getServerSideProps(context) {
+  function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  }
+  function replaceAll(str, match, replacement) {
+    return str.replace(new RegExp(escapeRegExp(match), 'g'), () => replacement);
+  }
+
   const id = context.query.slug;
-  console.log(id);
 
   let csv_data_witness = await d3.csv(
     'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/wit_count.csv'
@@ -75,6 +81,10 @@ export async function getServerSideProps(context) {
     'https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv'
   );
   csv_data_hearings = csv_data_hearings.map((c) => ({ ...c, Witnesses: eval(c['Witnesses']) }));
+  csv_data_hearings = csv_data_hearings.map((c) => ({
+    ...c,
+    'Witness Transcripts': eval(replaceAll(replaceAll(c['Witness Transcripts'], '(', '['), ')', ']')),
+  }));
   csv_data_hearings = csv_data_hearings.map((item) => {
     if (Array.isArray(item.Witnesses)) {
       if (item.Witnesses.includes(csv_data_witness[0].Witnesses)) {
@@ -89,8 +99,6 @@ export async function getServerSideProps(context) {
   csv_data_hearings = csv_data_hearings.filter((c) => {
     return c !== undefined;
   });
-  // console.log(csv_data_hearings)
-
   return {
     props: { witness_data: csv_data_witness[0], data: csv_data_hearings },
   };
@@ -99,6 +107,25 @@ export async function getServerSideProps(context) {
 export default function witnessSpecificDashboard(props) {
   const classes = useStyles();
   console.log(props);
+
+  let transcripts = props.data.map((c) => c['Witness Transcripts']);
+
+  /*
+  let isWitness = (name) => {
+    return name = props.witness_data.Witnesses
+  }
+  */
+
+  transcripts = transcripts.map((a) => a.filter((a) => a[0].includes(props.witness_data.Witnesses)));
+
+  let transcripts_list = transcripts.map((t) => {
+    const new_item = {
+      Name: t[0][0],
+      URL: t[0][1],
+    };
+    return new_item;
+  });
+
   return (
     <div className={classes.root}>
       <Typography gutterBottom variant="h4" align="center">
@@ -120,6 +147,22 @@ export default function witnessSpecificDashboard(props) {
           ]}
           data={props.data}
           title="Senate Committee Hearings"
+          options={{
+            exportAllData: true,
+            exportButton: {
+              csv: true,
+            },
+          }}
+        />
+      </div>
+
+      <p>{props.witness_data.Witnesses} transcripts.</p>
+      <div>
+        <MaterialTable
+          icons={tableIcons}
+          columns={[{ title: 'URL', field: 'URL' }]}
+          data={transcripts_list}
+          title="Witness Transcripts"
           options={{
             exportAllData: true,
             exportButton: {
