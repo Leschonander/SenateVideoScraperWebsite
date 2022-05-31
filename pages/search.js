@@ -69,7 +69,6 @@ export async function getServerSideProps(context) {
 
 export default function SearchHearingDashboard(props) {
   const classes = useStyles();
-  console.log(props.tags);
 
   const committees = [
     'Armed',
@@ -98,44 +97,27 @@ export default function SearchHearingDashboard(props) {
     setComm(event.target.value);
   };
 
-  // const [data, setData] = React.useState([]);
-  // const [dataMaster, setDataMaster] = React.useState([]);
-  // const [loading, setLoading] = React.useState(true);
+  const [data, setData] = React.useState([]);
+  const [dataMaster, setDataMaster] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   const url =
-    'https://gist.githubusercontent.com/Leschonander/53d6167bcf24b0ccf3363d3048f30736/raw/c7528cfb1a31ee5cb2f589c406f0d05367022d51/MasterFileWithTags.csv';
+    'https://gist.githubusercontent.com/Leschonander/4cb6057802563d36239ecca93cf6c64e/raw/991806e81a842bb85d82f2a0e32743cd6d674dd5/MasterFileWithTags_2.csv';
 
-  /*
   React.useEffect(() => {
     d3.csv(url).then((d) => {
-      let d_cleaned = d
-        .map((c) => ({ ...c, Witnesses: eval(c['Witnesses']) }))
-        .map((c) => ({ ...c, Tags: eval(c['Tags']) }))
-        .map((item) => {
-          if (Array.isArray(item.Witnesses)) {
-            const updatedItem = {
-              ...item,
-              Witnesses: item.Witnesses.filter((v, i, a) => a.indexOf(v) === i)
-                .join('\n')
-                .replace('Chairman', '')
-                .replace('Opening Statement', '')
-                .replace('Ranking Member', '')
-                .replace('opening statement', ''),
-            };
+      let d_cleaned = d;
 
-            return updatedItem;
-          }
-          return item;
-        });
-
-      // console.log(d_cleaned);
+      console.log(d_cleaned);
       setData(d_cleaned);
       setDataMaster(d_cleaned);
       setLoading(false);
     });
     return () => undefined;
   }, []);
-  */
+
+  // Can use .includes("INSERT GIVEN VARS HERE")
+  // FOr the searching instead of making it a proper list!
 
   return (
     <div className={classes.root}>
