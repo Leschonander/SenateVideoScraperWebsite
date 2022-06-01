@@ -130,9 +130,6 @@ export default function SearchHearingDashboard(props) {
     return () => undefined;
   }, []);
 
-  // Can use .includes("INSERT GIVEN VARS HERE")
-  // FOr the searching instead of making it a proper list!
-
   React.useEffect(() => {
     let newData = dataMaster.map((item) => {
       const contains_com = comm.some((el) => item.Committee.includes(el));
@@ -145,7 +142,11 @@ export default function SearchHearingDashboard(props) {
       return x !== undefined;
     });
 
-    setData(newData);
+    if (comm === [] && tagList == []) {
+      setData(dataMaster);
+    } else {
+      setData(newData);
+    }
   }, [comm, tagList]);
 
   return (
