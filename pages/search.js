@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import MaterialTable from 'material-table';
 import * as d3 from 'd3';
@@ -67,8 +67,16 @@ export async function getServerSideProps(context) {
   };
 }
 
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
+  };
+}
+
 export default function SearchHearingDashboard(props) {
   const classes = useStyles();
+  const theme = useTheme();
 
   const committees = [
     'Armed',
@@ -92,9 +100,15 @@ export default function SearchHearingDashboard(props) {
     'Veterans',
   ];
 
-  const [comm, setComm] = React.useState('');
-  const handleChange = (event) => {
+  const [comm, setComm] = React.useState([]);
+  const [tagList, setTagList] = React.useState([]);
+
+  const handleChangeComm = (event) => {
     setComm(event.target.value);
+  };
+
+  const handleChangeTags = (event) => {
+    setTagList(event.target.value);
   };
 
   const [data, setData] = React.useState([]);
@@ -119,29 +133,72 @@ export default function SearchHearingDashboard(props) {
   // Can use .includes("INSERT GIVEN VARS HERE")
   // FOr the searching instead of making it a proper list!
 
+  React.useEffect(() => {
+    let newData = dataMaster.map((item) => {
+      const contains_com = comm.some((el) => item.Committee.includes(el));
+      const contains_tags = tagList.some((el) => item.Tags.includes(el));
+      if (contains_com === true || contains_tags === true) {
+        return item;
+      }
+    });
+    newData = newData.filter(function (x) {
+      return x !== undefined;
+    });
+
+    setData(newData);
+  }, [comm, tagList]);
+
   return (
     <div className={classes.root}>
       <Typography>Search</Typography>
 
-      <TextField id="standard-basic" label="Standard" variant="standard" />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4} className={classes.card}>
           <h3>Committees</h3>
-          <Select labelId="demo-simple-select-label" id="demo-simple-select" value={comm} onChange={handleChange}>
+          <Select value={comm} onChange={handleChangeComm} multiple>
             {committees.map((c, index) => (
-              <MenuItem value={c}>{c}</MenuItem>
+              <MenuItem key={c} value={c} style={getStyles(c, comm, theme)}>
+                {c}
+              </MenuItem>
             ))}
           </Select>
         </Grid>
         <Grid item xs={12} sm={4} className={classes.card}>
           <h3>Tags</h3>
-          <Select labelId="demo-simple-select-label" id="demo-simple-select" value={comm} onChange={handleChange}>
+          <Select value={tagList} onChange={handleChangeTags} multiple>
             {props.tags.map((c, index) => (
-              <MenuItem value={c.Tags}>{c.Tags}</MenuItem>
+              <MenuItem key={c.Tags} value={c.Tags} style={getStyles(c.Tags, tagList, theme)}>
+                {c.Tags}
+              </MenuItem>
             ))}
           </Select>
         </Grid>
       </Grid>
+      {loading && <div>Senate Committee Hearing data loading...</div>}
+      {!loading && (
+        <div>
+          <MaterialTable
+            icons={tableIcons}
+            columns={[
+              { title: 'Date', field: 'Date' },
+              { title: 'URL', field: 'URL' },
+              { title: 'Title', field: 'Title' },
+              { title: 'Committee', field: 'Committee' },
+              { title: 'Video Url', field: 'video_url' },
+              { title: 'Witnesses', field: 'Witnesses' },
+              { title: 'Tags', field: 'Tags' },
+            ]}
+            data={data}
+            title="Senate Committee Hearings"
+            options={{
+              exportAllData: true,
+              exportButton: {
+                csv: true,
+              },
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }
