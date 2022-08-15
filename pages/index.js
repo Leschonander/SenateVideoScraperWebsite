@@ -210,6 +210,7 @@ export default function HearingDashboard() {
               { title: 'Committee', field: 'Committee' },
               { title: 'Video Url', field: 'video_url' },
               { title: 'Witnesses', field: 'Witnesses' },
+              { title: 'Tags', field: 'Tags' },
             ]}
             data={data}
             title="Senate Committee Hearings"
