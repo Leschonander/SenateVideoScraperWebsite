@@ -142,7 +142,9 @@ export default function SearchHearingDashboard(props) {
       return x !== undefined;
     });
 
-    if (comm === [] && tagList == []) {
+    if (comm.length === 0 && newData.length === 0) {
+      setData(dataMaster);
+    } else if (tagList.length === 0 && newData.length === 0) {
       setData(dataMaster);
     } else {
       setData(newData);
