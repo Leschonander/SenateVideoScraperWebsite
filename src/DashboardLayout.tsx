@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function DashboardLayout({ children }: { children: JSX.Element | JSX.Element[] }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(null);
-  const matches = useMediaQuery('(max-width:980px)');
+  const matches = useMediaQuery('(max-width:1024px)');
 
   const committees = [
     'Armed',
@@ -169,6 +169,14 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
               </a>
             </Link>
 
+            <Link className={classes.title} href="/tags">
+              <a>
+                <Typography variant="h6" noWrap style={{ marginRight: '10px', cursor: 'pointer' }}>
+                  Tags
+                </Typography>
+              </a>
+            </Link>
+
             <Link
               className={classes.title}
               href="https://raw.githubusercontent.com/Leschonander/SenateVideoScraper/master/SenateVideoFiles/MasterFile.csv"
@@ -226,6 +234,17 @@ export default function DashboardLayout({ children }: { children: JSX.Element | 
                 Transcripts
               </a>
             </MenuItem>
+
+            <MenuItem
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              <a href={`/tags`} className={classes.linkStyle}>
+                Tags
+              </a>
+            </MenuItem>
+
             <MenuItem
               onClick={() => {
                 handleClose();
